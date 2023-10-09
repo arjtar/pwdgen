@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback,useEffect } from 'react'
 
 
 
@@ -15,18 +15,22 @@ const passwordGenerator = useCallback(()=> {
   if (numberAllowed) str +="0123456789"
   if (charAllowed) str += "!@#$%^&_[]{}`~"
   
-  for(let i = 1; i <=Array.length; i++){
+  for(let i = 1; i <=length; i++){
     let char =Math.floor(Math.random()* str.length + 1)
-    pass = str.charAct(char)
+    pass += str.charAt(char)
 
   }
   setPassword(pass)
 
 },[length, numberAllowed, charAllowed, setPassword])
+useEffect( ()=> {
+  passwordGenerator()
+},[length,numberAllowed,charAllowed,passwordGenerator])
+
   return (
     <>
      <div className='w-full max-w-md mx-auto shadow-md
-     rounded-lg px-4 my-8 text-orange-500 br-gray-700'>
+     rounded-lg px-4 my-8 text-orange-500 bg-gray-700'>
 
       <h1 className='text-white text-center'>Password Generator </h1>
 
@@ -46,9 +50,12 @@ const passwordGenerator = useCallback(()=> {
             type="range"
             min={6}
             max={100}
-            className='cursor-pointer'/>
-            onchange={(e)=> {SetLength(e.target.value)}}/>
-            <label>length</label>
+            value={length}
+            className='cursor-pointer'
+           
+            onchange={(e)=> {Setlength(e.target.value)}}
+            />
+            {/* <label>length</label> */}
           <label>length: {length}</label>
 
           </div>
@@ -61,7 +68,20 @@ const passwordGenerator = useCallback(()=> {
               SetNumberAllowed((prev) => !prev);
             }}
             />
+            
             <label htmlfor="numberInput">Numbers</label>
+        </div>
+        <div className="flex items-center gap-x-1">
+        <input
+            type="checkbox"
+            defaultChecked={numberAllowed}
+            id="numberInput"
+            onChange={()=>{
+              SetNumberAllowed((prev) => !prev);
+            }}
+            />
+
+            <label htmlFor='characterInput'>Characters</label>
         </div>
         
         </ div>
